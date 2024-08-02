@@ -1,0 +1,24 @@
+{
+  "name": "navigation-multirouter",
+  "version": "0.1.0",
+  "description": "Multirouter setup for SPAs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexghiu/navigation-multirouter.git"
+  },
+  "keywords": [
+    "multirouter",
+    "navigation",
+    "spa"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexghiu/navigation-multirouter/issues"
+  },
+  "homepage": "https://github.com/alexghiu/navigation-multirouter#readme"
+}

@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "mixin/**", "destination": "mixin/index.html" }]
+}
