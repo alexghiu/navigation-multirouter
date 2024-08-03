@@ -10,13 +10,11 @@ customElements.define(
   class extends FeatureRouterMixin(LitElement) {
     static properties = {
       _routeTemplate: {},
-      featureBasePath: {},
     };
 
     constructor() {
       super();
       this._routeTemplate = nothing;
-      this.featureBasePath = "/";
     }
 
     render() {

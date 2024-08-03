@@ -2,13 +2,18 @@ export const FeatureRouterMixin = (superClass) =>
   class extends superClass {
     static properties = {
       navigation: {},
+      featureBasePath: {},
     };
+
+    constructor() {
+      super();
+      // Tests should inject their own navigation stub.
+      this.navigation = window.navigation;
+      this.featureBasePath = "/";
+    }
 
     connectedCallback() {
       super.connectedCallback();
-      if (!this.navigation) {
-        this.navigation = window.navigation;
-      }
       this._parseFeatureRoute(new URL(this.navigation.currentEntry.url));
       this.#_handleNavigationNavigate =
         this.#handleNavigationNavigate.bind(this);

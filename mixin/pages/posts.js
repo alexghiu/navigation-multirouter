@@ -12,14 +12,12 @@ customElements.define(
     static properties = {
       _routeTemplate: {},
       _routeMatch: { state: true },
-      featureBasePath: {},
     };
 
     constructor() {
       super();
       this._routeTemplate = nothing;
       this._routeMatch = {};
-      this.featureBasePath = "/";
     }
 
     render() {
