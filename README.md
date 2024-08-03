@@ -13,6 +13,10 @@ This repository is a playground of architectures that serve the purposes mention
 
 ![Schematic goal](/assets/schematic-goal.svg)
 
+## Approaches
+
+[Mixin](mixin/README.md)
+
 ## Scripts
 
 ```bash
