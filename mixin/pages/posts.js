@@ -12,18 +12,21 @@ customElements.define(
     static properties = {
       _routeTemplate: {},
       _routeMatch: { state: true },
+      lazyProperty: {},
     };
 
     constructor() {
       super();
       this._routeTemplate = nothing;
       this._routeMatch = {};
+      this.lazyProperty = {};
     }
 
     render() {
       return html`
         <h2>Posts page</h2>
         <div>${this._routeTemplate}</div>
+        <div>${this.#renderLazyProperty()}</div>
       `;
     }
 
@@ -31,7 +34,8 @@ customElements.define(
      * @override
      * @protected
      */
-    _parseFeatureRoute(url) {
+    _parseFeatureRoute() {
+      const url = this._currentUrl;
       const emptyPattern = new URLPattern({
         pathname: `${this.featureBasePath}`,
       });
@@ -90,6 +94,15 @@ customElements.define(
         .featureBasePath="${this.featureBasePath}read/${id}/"
         .id=${id}
       ></nmm-posts-read-page>`;
+    }
+
+    /**
+     * @private
+     */
+    #renderLazyProperty() {
+      return html`<pre>
+Lazy property: ${JSON.stringify(this.lazyProperty, "", "  ")}</pre
+      >`;
     }
   },
 );

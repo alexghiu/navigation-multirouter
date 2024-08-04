@@ -1,10 +1,13 @@
 # Mixin
 
-This approach requires a feature to express all its functionality (links, sub-routes) relative to a base path. The feature will expose a callback that will be called when the browser URL changes. It will the be the resposability of the feature to take action (inside the callback) of which template it would render (or as an alternative, what parts of the UI it would show and hide).
+This approach requires a feature to express all its functionality (links, sub-routes) relative to a base path. The feature will expose a callback that will be called when the browser URL changes. It will then be the resposability of the feature to take action (inside the callback) of which template it would render (or as an alternative, what parts of the UI it would show and hide).
 
 The [FeatureRouterMixin](./feature-router-mixin.js) exposes a `featureBasePath` property (the base property mentioned above). The value should always be assigned to by a parent component.
 
-The [FeatureRouterMixin](./feature-router-mixin.js) will call a `_parseFeatureRoute` callback, when the URL changes. This callback will receive one argument, the current URL.
+The [FeatureRouterMixin](./feature-router-mixin.js) offers applying classes
+access to the current URL with the `_currentUrl` protected property.
+
+The [FeatureRouterMixin](./feature-router-mixin.js) will call a `_parseFeatureRoute` callback, when the URL changes. One can make use of the `_currentUrl` protected property to match the URL agains feature known routes.
 
 ## Sample explanation
 
@@ -20,6 +23,11 @@ The `_parseFeatureRoute` callback, provides an example of basic functionality th
 - providing a fallback template that is to be rendered when a match cannot be made (in our case `nothing` will be rendered).
 
 Inside the [shell.js](./shell.js) one might also find of interest the `#renderPostsRoute` method. This illustrates how this feature forwards the `featureBasePath` property to a sub-feature that also exposes routing functionality. Notice how the sub-feature is being assigned the current value of `featureBasePath` to which a new URL segment is added (`posts/` in the indicated method).
+
+The [shell.js](./shell.js) element also aims to solve an issue that will come up sooner or later in any application: property changes will NOT be trickled down to already rendered feature route templates - Think of a case where for instance the user details are lazily loaded from a remote source. This user information could for instance be forwarded down the DOM tree to child features.
+
+The route template will need to be re-rendered when properties of a parent feature change and they need to be passed down to the child. This is done by overriding the `update` lifecycle callback and calling the `_parseFeatureRoute`
+protected method.
 
 ### `pages/posts.js`
 

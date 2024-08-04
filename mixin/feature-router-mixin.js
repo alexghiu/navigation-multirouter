@@ -10,11 +10,12 @@ export const FeatureRouterMixin = (superClass) =>
       // Tests should inject their own navigation stub.
       this.navigation = window.navigation;
       this.featureBasePath = "/";
+      this._currentUrl = new URL(this.navigation.currentEntry.url);
     }
 
     connectedCallback() {
       super.connectedCallback();
-      this._parseFeatureRoute(new URL(this.navigation.currentEntry.url));
+      this._parseFeatureRoute();
       this.#_handleNavigationNavigate =
         this.#handleNavigationNavigate.bind(this);
       this.navigation.addEventListener(
@@ -46,17 +47,23 @@ export const FeatureRouterMixin = (superClass) =>
      * @param {NavigateEvent} e
      */
     #handleNavigationNavigate(e) {
-      const url = new URL(e.destination.url);
+      this._currentUrl = new URL(e.destination.url);
       e.intercept({
         handler: () => {
-          this._parseFeatureRoute(url);
+          this._parseFeatureRoute();
         },
       });
     }
 
     /**
+     * @type {URL}
+     * @readonly
      * @protected
-     * @param {URL} url
      */
-    _parseFeatureRoute(url) {}
+    _currentUrl = null;
+
+    /**
+     * @protected
+     */
+    _parseFeatureRoute() {}
   };

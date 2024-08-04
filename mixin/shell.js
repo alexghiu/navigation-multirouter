@@ -10,11 +10,24 @@ customElements.define(
   class extends FeatureRouterMixin(LitElement) {
     static properties = {
       _routeTemplate: {},
+      // Sample of remotely loaded data.
+      lazyProperty: {},
     };
 
     constructor() {
       super();
       this._routeTemplate = nothing;
+      this.lazyProperty = {};
+    }
+
+    connectedCallback() {
+      super.connectedCallback();
+      // Simulate loading some data after 2 secs from a remote source.
+      setTimeout(() => {
+        this.lazyProperty = {
+          message: "Greetings",
+        };
+      }, 2000);
     }
 
     render() {
@@ -23,6 +36,19 @@ customElements.define(
         <nav>${this.#renderNavigation()}</nav>
         <div>${this._routeTemplate}</div>
       `;
+    }
+
+    /**
+     * @override
+     * @param {Map} changedProperties
+     */
+    update(changedProperties) {
+      super.update(changedProperties);
+      // If the `lazyProperty` changes, the route template will need to be
+      // re-rendered so that the state change is observed by the element.
+      if (changedProperties.has("lazyProperty")) {
+        this._parseFeatureRoute();
+      }
     }
 
     /**
@@ -41,7 +67,8 @@ customElements.define(
      * @override
      * @protected
      */
-    _parseFeatureRoute(url) {
+    _parseFeatureRoute() {
+      const url = this._currentUrl;
       // This is where we define our "routes".
       const emptyPattern = new URLPattern({
         pathname: `${this.featureBasePath}`,
@@ -80,6 +107,7 @@ customElements.define(
       return html`
         <nmm-posts-page
           .featureBasePath="${this.featureBasePath}posts/"
+          .lazyProperty=${this.lazyProperty}
         ></nmm-posts-page>
       `;
     }
